@@ -1,5 +1,5 @@
 function dataV() {
-	//gyakorlás
+	// practice
 	// d3.select();
 	// d3.selectAll();
 
@@ -24,7 +24,7 @@ function dataV() {
 	//     .text((d)=> {return d;})
 	//-----------------------------------------------------------------------
 
-	// margó és képernyő méreteinek beállítása
+	// set margin and screen sizes
 	let margin = { top: 20, right: 20, bottom: 30, left: 50 },
 		width = 1400 - margin.left - margin.right,
 		height = 750 - margin.top - margin.bottom;
@@ -32,7 +32,7 @@ function dataV() {
 	// let dataY = [0, 180];
 	// let dataX = [0, 1000];
 
-	// tartományok beállítása
+	// set domain
     let x = d3.scaleLinear()
     //.domain(dataX)
     .range([0, width]);
@@ -42,7 +42,7 @@ function dataV() {
 		//.domain([0, d3.max(dataY)])
 		.range([height, 0]);
 
-	// tengely vonalak meghatározása
+	// definition of axis lines
 	let scaleLine = d3
 		.line()
 		.x((d) => {
@@ -52,9 +52,9 @@ function dataV() {
 			return y(d.gameLength);
 		});
 
-	// svg elem csatolása a bodyhoz
-	// hozzáadunk egy "g" elemet az svg elemhez
-	// ezt a "g" elemet a bal felső margóra helyezzük
+	// append an svg element to the body
+	// we add an "g" element to the svg
+	// this the "g" element is placed in the upper left margin
 	let svg = d3
 		.select("body")
 		.append("svg")
@@ -63,10 +63,10 @@ function dataV() {
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	// megkapja az adatokat
+	// receives the data
 	d3.csv("snakes.csv", (error, data) => {
 		if (error) return error;
-		// forEach használatával formázzuk az adatokat
+		// we format the data using forEach
 		data.forEach((d) => {
 			d.gameNumber = d.gameNumber;
 			d.gameLength = +d.gameLength;
@@ -85,16 +85,16 @@ function dataV() {
 			}),
 		]);
 
-		// hozzáadunk egy
+		
 		svg.append("path").data([data]).attr("class", "line").attr("d", scaleLine);
 
-		// x tengely hozzáadása
+		// add x axis
 		svg
 			.append("g")
 			.attr("transform", "translate(0," + height + ")")
 			.call(d3.axisBottom(x));
 
-		// y tengely hozzáadása
+		// add y axis
 		svg.append("g").call(d3.axisLeft(y));
 	});
 }
